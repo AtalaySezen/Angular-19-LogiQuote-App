@@ -1,4 +1,7 @@
 <div class="container">
+    <div>
+        <h1 class="header-form">LogiQuote</h1>
+    </div>
     <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitLoginForm()">
         <nz-form-item>
             <nz-form-control [nzErrorTip]="'Please enter valid e-mail address.'">
@@ -8,9 +11,12 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-            <nz-form-control [nzErrorTip]="'Password required'">
+            <nz-form-control [nzErrorTip]="getPasswordError()">
                 <nz-input-group nzPrefixIcon="lock">
-                    <input type="password" nz-input formControlName="password" placeholder="Password" />
+                    <input [type]="isPasswordVisible ? 'text' : 'password'" nz-input formControlName="password"
+                        placeholder="Password" />
+                    <button class="btn-show-password" (click)="togglePasswordVisibility()"><span nz-icon
+                            [nzType]="isPasswordVisible ? 'eye-invisible' : 'eye'" nzTheme="outline"></span></button>
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
