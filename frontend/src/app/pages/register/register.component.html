@@ -1,1 +1,40 @@
-<p>register works!</p>
+<div class="container">
+    <div>
+        <h1 class="header-form">LogiQuote Register</h1>
+    </div>
+    <form nz-form [formGroup]="RegisterForm" class="register-form" (ngSubmit)="submitRegisterForm()">
+        <nz-form-item>
+            <nz-form-control [nzErrorTip]="'Please enter a valid e-mail address.'">
+                <nz-input-group nzPrefixIcon="mail">
+                    <input type="email" nz-input formControlName="email" placeholder="Email" />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzErrorTip]="getPasswordError()">
+                <nz-input-group nzPrefixIcon="lock">
+                    <input [type]="isPasswordVisible ? 'text' : 'password'" nz-input formControlName="password"
+                        placeholder="Password" [id]="'password'" />
+                    <button type="button" class="btn-show-password" (click)="togglePasswordVisibility('password')">
+                        <span nz-icon [nzType]="isPasswordVisible ? 'eye-invisible' : 'eye'" nzTheme="outline"></span>
+                    </button>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzErrorTip]="getConfirmPasswordError()">
+                <nz-input-group nzPrefixIcon="lock">
+                    <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" nz-input
+                        formControlName="confirmPassword" placeholder="Confirm Password" [id]="'confirmPassword'" />
+                    <button type="button" class="btn-show-password"
+                        (click)="togglePasswordVisibility('confirmPassword')">
+                        <span nz-icon [nzType]="isConfirmPasswordVisible ? 'eye-invisible' : 'eye'"
+                            nzTheme="outline"></span>
+                    </button>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <button nz-button class="register-form-button register-form-margin" [nzType]="'primary'">Register</button>
+        <a [routerLink]="['/login']" routerLinkActive="router-link-active">Login</a>
+    </form>
+</div>
