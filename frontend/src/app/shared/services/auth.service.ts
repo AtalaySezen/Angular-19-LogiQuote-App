@@ -29,4 +29,9 @@ export class AuthService {
     )
   }
 
+
+  LogOut(){
+    
+  }
+
 }

@@ -1,0 +1,33 @@
+<nz-layout>
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+        <div class="logo">
+            <h3 class="logo-header">Logiquote</h3>
+        </div>
+        <ul nz-menu nzTheme="dark" nzMode="inline">
+            <li nz-menu-item>
+                <span nz-icon nzType="paper-clip" nzTheme="outline"></span>
+                <a [routerLink]="['/offer']" routerLinkActive="router-link-active">Offer</a>
+            </li>
+            <li nz-menu-item>
+                <span nz-icon nzType="table" nzTheme="outline"></span>
+                <a [routerLink]="['/offer-list']">Offer List</a>
+            </li>
+            <li nz-menu-item>
+                <span nz-icon nzType="logout" nzTheme="outline"></span>
+                <a (click)="logOut()">Logout</a>
+            </li>
+        </ul>
+    </nz-sider>
+    <nz-layout>
+        <nz-header>
+            <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                (click)="isCollapsed = !isCollapsed"></span>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+        <nz-footer>Logiquote Angular 19</nz-footer>
+    </nz-layout>
+</nz-layout>
