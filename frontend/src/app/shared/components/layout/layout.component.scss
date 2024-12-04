@@ -29,6 +29,10 @@ nz-content {
     background-color: white;
 }
 
+nz-sider{
+    z-index: 9999;
+}
+
 nz-layout {
     height: 100%;
 }
@@ -42,3 +46,4 @@ nz-layout {
 nz-footer {
     text-align: center;
 }
+

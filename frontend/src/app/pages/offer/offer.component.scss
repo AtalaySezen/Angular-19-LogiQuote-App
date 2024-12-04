@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    nz-form-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    nz-select,
+    input {
+        min-width: 300px;
+    }
+
+    @media (max-width: 600px) {
+        nz-select,
+        input {
+            min-width: 100%;
+        }
+    }
+}
