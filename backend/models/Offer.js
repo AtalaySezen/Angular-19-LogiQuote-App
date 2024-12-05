@@ -5,17 +5,14 @@ const OfferSchema = new mongoose.Schema(
     mode: {
       type: String,
       required: true,
-      enum: ["LCL", "FCL", "Air"],
     },
     movementType: {
       type: String,
       required: true,
-      enum: ["Door to Door", "Port to Door", "Door to Port", "Port to Port"],
     },
     incoterms: {
       type: String,
       required: true,
-      enum: ["DDP", "DAT"],
     },
     countryCity: {
       type: String,
@@ -23,12 +20,17 @@ const OfferSchema = new mongoose.Schema(
     },
     packageType: {
       type: String,
+      enum: ["Cartons", "Boxes", "Pallets"],
       required: true,
-      enum: ["Pallets", "Boxes", "Cartons"],
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    dimensions: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Dimensions",
       required: true,
     },
   },

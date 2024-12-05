@@ -1,5 +1,6 @@
 const express = require("express");
 const Offer = require("../models/Offer");
+const Dimension = require("../models/Dimension");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -17,6 +18,21 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 
   try {
+    let dimension;
+    if (packageType === "Cartons") {
+      dimension = await createOrUpdateDimension("Cartons", 12, 12, 12);
+    } else if (packageType === "Boxes") {
+      dimension = await createOrUpdateDimension("Boxes", 24, 16, 12);
+    } else if (packageType === "Pallets") {
+      dimension = await createOrUpdateDimension("Pallets", 40, 48, 60);
+    } else {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid package type.",
+        data: null,
+      });
+    }
+
     const newOffer = new Offer({
       mode,
       movementType,
@@ -24,7 +40,9 @@ router.post("/", authMiddleware, async (req, res) => {
       countryCity,
       packageType,
       userId,
+      dimensions: dimension._id,
     });
+
     await newOffer.save();
     res.status(201).json({
       status: "success",
@@ -41,6 +59,16 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
+const createOrUpdateDimension = async (type, width, length, height) => {
+  let dimension = await Dimension.findOne({ type });
+  if (!dimension) {
+    dimension = new Dimension({ type, width, length, height });
+    await dimension.save();
+    console.log(`${type} dimension added.`);
+  }
+  return dimension;
+};
+
 router.get("/", authMiddleware, async (req, res) => {
   const userId = req.user.id;
   const page = parseInt(req.query.page) || 1;
@@ -48,7 +76,11 @@ router.get("/", authMiddleware, async (req, res) => {
 
   try {
     const skip = (page - 1) * limit;
-    const offers = await Offer.find({ userId }).skip(skip).limit(limit);
+
+    const offers = await Offer.find({ userId })
+      .skip(skip)
+      .limit(limit)
+      .populate("dimensions");
 
     const totalItems = await Offer.countDocuments({ userId });
     const totalPages = Math.ceil(totalItems / limit);
@@ -57,8 +89,8 @@ router.get("/", authMiddleware, async (req, res) => {
       status: "success",
       message: "",
       data: {
-        offers: offers,
-        totalPages: totalPages,
+        offers,
+        totalPages,
         totalItemCount: totalItems,
       },
     });
@@ -77,7 +109,10 @@ router.get("/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const offer = await Offer.findOne({ _id: id, userId });
+    const offer = await Offer.findOne({ _id: id, userId }).populate(
+      "dimensions"
+    );
+
     if (!offer) {
       return res.status(404).json({
         status: "error",
