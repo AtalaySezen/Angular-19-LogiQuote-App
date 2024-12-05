@@ -9,10 +9,11 @@ import { DataService } from '../../shared/services/data.service';
 import { Offer } from '../../shared/models/general.model';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../shared/services/notification.service';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'app-offer',
-  imports: [NzButtonModule, NzFormModule, CommonModule, FormsModule, ReactiveFormsModule, NzAutocompleteModule, NzInputModule, NzSelectModule],
+  imports: [NzButtonModule, NzFormModule, NzToolTipModule, CommonModule, FormsModule, ReactiveFormsModule, NzAutocompleteModule, NzInputModule, NzSelectModule],
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.scss'
 })

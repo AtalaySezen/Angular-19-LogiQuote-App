@@ -1,11 +1,10 @@
 <div class="container">
-
-
     <nz-form [formGroup]="offerForm">
         <div class="form-grid">
             <nz-form-item>
                 <nz-form-label nzFor="mode">Mode</nz-form-label>
-                <nz-form-control>
+                <nz-form-control nz-tooltip
+                    nzTooltipTitle="The mode of transport determines the type of shipment. Choose LCL for less-than-container load, FCL for full container load, or Air for air freight.">
                     <nz-select formControlName="mode" nzPlaceHolder="Select Mode">
                         <nz-option nzValue="LCL" nzLabel="LCL"></nz-option>
                         <nz-option nzValue="FCL" nzLabel="FCL"></nz-option>
@@ -15,7 +14,8 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFor="movementType">Movement Type</nz-form-label>
-                <nz-form-control>
+                <nz-form-control nz-tooltip
+                    nzTooltipTitle="Select the type of movement based on the shipment's origin and destination. 'Door to Door' refers to pick-up and delivery from the origin to the destination, 'Port to Door' and 'Door to Port' refer to shipments between ports and destinations, and 'Port to Port' indicates shipments between ports.">
                     <nz-select formControlName="movementType" nzPlaceHolder="Select Movement Type">
                         <nz-option nzValue="Door to Door" nzLabel="Door to Door"></nz-option>
                         <nz-option nzValue="Port to Door" nzLabel="Port to Door"></nz-option>
@@ -26,13 +26,13 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFor="incoterms">Incoterms</nz-form-label>
-                <nz-form-control>
-                    <nz-select formControlName="incoterms" nzPlaceHolder="Select Incoterms">
-                        <nz-option nzValue="DDP" nzLabel="Delivered Duty Paid (DDP)"></nz-option>
-                        <nz-option nzValue="DAT" nzLabel="Delivered At Place (DAT)"></nz-option>
-                    </nz-select>
+                <nz-form-control nz-tooltip nzTooltipTitle="Incoterms (International Commercial Terms) define the responsibilities of buyers and sellers for the delivery of goods under sales contracts. 'DDP' means the seller is responsible for all costs and risks, including customs duties, while 'DAT' means the seller is responsible for delivery to a specified place, but the buyer is responsible for import duties and risks.">
+                  <nz-select formControlName="incoterms" nzPlaceHolder="Select Incoterms">
+                    <nz-option nzValue="DDP" nzLabel="Delivered Duty Paid (DDP)"></nz-option>
+                    <nz-option nzValue="DAT" nzLabel="Delivered At Place (DAT)"></nz-option>
+                  </nz-select>
                 </nz-form-control>
-            </nz-form-item>
+              </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFor="countryCity">Country - City</nz-form-label>
                 <nz-form-control>
