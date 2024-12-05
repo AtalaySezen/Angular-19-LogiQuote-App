@@ -1,1 +1,30 @@
-<p>offer-list works!</p>
+<nz-table #borderedTable nzBordered nzTitle="Offers" [nzShowPagination]="false" [nzData]="offerList">
+    <thead>
+        <tr>
+            <th>Mode</th>
+            <th>Movement Type</th>
+            <th>Incoterms</th>
+            <th>Countries - Cities</th>
+            <th>Package Type</th>
+            <th>Unit - 1 </th>
+            <th>Unit - 2 </th>
+            <th>Currency </th>
+            <th>Pallet Count </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (data of offerList; track data) {
+        <tr>
+            <td>{{ data.mode }}</td>
+            <td>{{ data.movementType }}</td>
+            <td>{{ data.incoterms }}</td>
+            <td>{{ data.countryCity }}</td>
+            <td>{{ data.packageType }}</td>
+            <td>{{ data.unit1Value }} {{data.unit1}}</td>
+            <td>{{ data.unit2Value }} {{data.unit2}}</td>
+            <td>{{ data.currency }}</td>
+            <td>{{ data.palletCount }}</td>
+        </tr>
+        }
+    </tbody>
+</nz-table>
