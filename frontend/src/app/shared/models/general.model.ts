@@ -9,3 +9,7 @@ export interface General<T> {
     message: string;
     data?: T;
 }
+
+export interface TokenModel<T> {
+    valid?: boolean
+}

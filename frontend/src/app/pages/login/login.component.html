@@ -2,7 +2,7 @@
     <div>
         <h1 class="header-form">LogiQuote</h1>
     </div>
-    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitLoginForm()">
+    <form nz-form [formGroup]="loginForm" class="login-form">
         <nz-form-item>
             <nz-form-control [nzErrorTip]="'Please enter valid e-mail address.'">
                 <nz-input-group nzPrefixIcon="mail">
@@ -27,7 +27,8 @@
                 </label>
             </div>
         </div>
-        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+        <button (click)="submitLoginForm()" [disabled]="loginForm.invalid" nz-button
+            class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
         <a [routerLink]="['/register']" routerLinkActive="router-link-active">Register</a>
     </form>
 </div>
