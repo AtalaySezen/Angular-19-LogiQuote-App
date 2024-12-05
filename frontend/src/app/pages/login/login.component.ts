@@ -27,8 +27,8 @@ export class LoginComponent {
   isPasswordVisible: boolean = false;
 
   loginForm = this.formBuilder.group({
-    email: this.formBuilder.control('', [Validators.required, Validators.email]),
-    password: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
+    email: this.formBuilder.control('user@example.com', [Validators.required, Validators.email]),
+    password: this.formBuilder.control('123456', [Validators.required, Validators.minLength(3)]),
     remember: this.formBuilder.control(true)
   });
 

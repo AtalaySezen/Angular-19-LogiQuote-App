@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AuthService } from '../../shared/services/auth.service';
+import { LoaderService } from '../../shared/services/loader.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +26,11 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class RegisterComponent {
   authService = inject(AuthService);
+  notificationService = inject(NotificationService);
+  loaderService = inject(LoaderService);
   formBuilder = inject(NonNullableFormBuilder);
+  router = inject(Router);
+
   isPasswordVisible: boolean = false;
   isConfirmPasswordVisible: boolean = false;
 
@@ -46,13 +52,23 @@ export class RegisterComponent {
 
   submitRegisterForm(): void {
     if (this.RegisterForm.valid) {
-      // this.authService.Login(this.RegisterForm.value.email!, this.RegisterForm.value.password!)
-      console.log(this.RegisterForm);
-    } else {
-      Object.values(this.RegisterForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
+      this.authService.Register(this.RegisterForm.value.email!, this.RegisterForm.value.email!).subscribe({
+        next: (data) => {
+          if (data.status === 'success') {
+            this.notificationService.createNotification(data.status, '', data.message)
+            this.router.navigate(['/login']);
+          } else {
+            this.notificationService.createNotification('Hata', '', data.message)
+          }
+        },
+        error: (err) => {
+          this.loaderService.hideLoader();
+          if (err.error && err.error.message) {
+            this.notificationService.createNotification('error', '', err.error.message);
+          }
+        },
+        complete: () => {
+          this.loaderService.hideLoader();
         }
       });
     }
@@ -65,7 +81,6 @@ export class RegisterComponent {
     if (password && confirmPassword && password !== confirmPassword) {
       return { passwordsMismatch: true };
     }
-
     return null;
   }
 
@@ -100,6 +115,5 @@ export class RegisterComponent {
       this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
     }
   }
-
 
 }
