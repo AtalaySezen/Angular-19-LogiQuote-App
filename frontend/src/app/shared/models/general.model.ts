@@ -26,3 +26,19 @@ export interface Offer {
     status?: 'success' | 'error';
     message?: string;
 }
+
+export interface Dimensions {
+    width: number;
+    length: number;
+    height: number;
+}
+
+export interface getDimensions {
+    status: string;
+    message: string;
+    data: {
+        carton: Dimensions;
+        box: Dimensions;
+        pallet: Dimensions;
+    };
+}
