@@ -38,11 +38,32 @@ router.post("/", authMiddleware, async (req, res) => {
   try {
     let dimension;
     if (packageType === "Cartons") {
-      dimension = await createOrUpdateDimension("Cartons", 12, 12, 12);
+      dimension = await createOrUpdateDimension(
+        "Cartons",
+        12,
+        12,
+        12,
+        unit1,
+        unit2
+      );
     } else if (packageType === "Boxes") {
-      dimension = await createOrUpdateDimension("Boxes", 24, 16, 12);
+      dimension = await createOrUpdateDimension(
+        "Boxes",
+        24,
+        16,
+        12,
+        unit1,
+        unit2
+      );
     } else if (packageType === "Pallets") {
-      dimension = await createOrUpdateDimension("Pallets", 40, 48, 60);
+      dimension = await createOrUpdateDimension(
+        "Pallets",
+        40,
+        48,
+        60,
+        unit1,
+        unit2
+      );
     } else {
       return res.status(400).json({
         status: "error",
@@ -62,6 +83,7 @@ router.post("/", authMiddleware, async (req, res) => {
       currency,
       userId,
       dimensions: dimension._id,
+      palletCount: dimension.palletCount,
     });
 
     await newOffer.save();
@@ -80,10 +102,25 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-const createOrUpdateDimension = async (type, width, length, height) => {
+const createOrUpdateDimension = async (
+  type,
+  width,
+  length,
+  height,
+  unit1,
+  unit2
+) => {
   let dimension = await Dimension.findOne({ type });
   if (!dimension) {
-    dimension = new Dimension({ type, width, length, height });
+    dimension = new Dimension({
+      type,
+      width,
+      length,
+      height,
+      unit1Value: unit1,
+      unit2Value: unit2,
+      palletCount: calculatePalletCount(width, length, height, unit1, unit2),
+    });
     await dimension.save();
   }
   return dimension;
@@ -124,34 +161,44 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/:id", authMiddleware, async (req, res) => {
-  const userId = req.user.id;
-  const { id } = req.params;
-
+router.get("/dimensions", async (req, res) => {
   try {
-    const offer = await Offer.findOne({ _id: id, userId }).populate(
-      "dimensions"
-    );
+    const carton = await Dimension.findOne({ type: "Cartons" });
+    const box = await Dimension.findOne({ type: "Boxes" });
+    const pallet = await Dimension.findOne({ type: "Pallets" });
 
-    if (!offer) {
+    if (!carton || !box || !pallet) {
       return res.status(404).json({
         status: "error",
-        message: "Offer not found",
-        data: null,
+        message: "Dimensions not found in the database.",
       });
     }
-
     res.json({
       status: "success",
-      message: "",
-      data: offer,
+      message: "Dimensions fetched successfully.",
+      data: {
+        carton: {
+          width: carton.width,
+          length: carton.length,
+          height: carton.height,
+        },
+        box: {
+          width: box.width,
+          length: box.length,
+          height: box.height,
+        },
+        pallet: {
+          width: pallet.width,
+          length: pallet.length,
+          height: pallet.height,
+        },
+      },
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({
       status: "error",
-      message: "An error occurred while fetching the offer",
-      data: null,
+      message: "An error occurred while fetching dimensions.",
     });
   }
 });

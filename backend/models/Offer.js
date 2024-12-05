@@ -28,9 +28,17 @@ const OfferSchema = new mongoose.Schema(
       enum: ["CM", "IN"],
       required: true,
     },
+    unit1Value: {
+      type: Number,
+      required: true,
+    },
     unit2: {
       type: String,
       enum: ["KG", "LB"],
+      required: true,
+    },
+    unit2Value: {
+      type: Number,
       required: true,
     },
     currency: {
@@ -46,6 +54,10 @@ const OfferSchema = new mongoose.Schema(
     dimensions: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Dimensions",
+      required: true,
+    },
+    palletCount: {
+      type: Number,
       required: true,
     },
   },
