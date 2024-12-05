@@ -6,10 +6,28 @@ const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.post("/", authMiddleware, async (req, res) => {
-  const { mode, movementType, incoterms, countryCity, packageType } = req.body;
+  const {
+    mode,
+    movementType,
+    incoterms,
+    countryCity,
+    packageType,
+    unit1,
+    unit2,
+    currency,
+  } = req.body;
   const userId = req.user.id;
 
-  if (!mode || !movementType || !incoterms || !countryCity || !packageType) {
+  if (
+    !mode ||
+    !movementType ||
+    !incoterms ||
+    !countryCity ||
+    !packageType ||
+    !unit1 ||
+    !unit2 ||
+    !currency
+  ) {
     return res.status(400).json({
       status: "error",
       message: "All fields are required.",
@@ -39,6 +57,9 @@ router.post("/", authMiddleware, async (req, res) => {
       incoterms,
       countryCity,
       packageType,
+      unit1,
+      unit2,
+      currency,
       userId,
       dimensions: dimension._id,
     });
@@ -64,7 +85,6 @@ const createOrUpdateDimension = async (type, width, length, height) => {
   if (!dimension) {
     dimension = new Dimension({ type, width, length, height });
     await dimension.save();
-    console.log(`${type} dimension added.`);
   }
   return dimension;
 };

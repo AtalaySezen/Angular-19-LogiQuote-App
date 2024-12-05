@@ -23,6 +23,21 @@ const OfferSchema = new mongoose.Schema(
       enum: ["Cartons", "Boxes", "Pallets"],
       required: true,
     },
+    unit1: {
+      type: String,
+      enum: ["CM", "IN"],
+      required: true,
+    },
+    unit2: {
+      type: String,
+      enum: ["KG", "LB"],
+      required: true,
+    },
+    currency: {
+      type: String,
+      enum: ["USD", "CNY", "TRY"],
+      required: true,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
