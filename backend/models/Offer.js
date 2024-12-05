@@ -51,11 +51,6 @@ const OfferSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    dimensions: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Dimensions",
-      required: true,
-    },
     palletCount: {
       type: Number,
       required: true,

@@ -1,89 +1,108 @@
 <div class="container">
+
+
     <nz-form [formGroup]="offerForm">
+        <div class="form-grid">
+            <nz-form-item>
+                <nz-form-label nzFor="mode">Mode</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="mode" nzPlaceHolder="Select Mode">
+                        <nz-option nzValue="LCL" nzLabel="LCL"></nz-option>
+                        <nz-option nzValue="FCL" nzLabel="FCL"></nz-option>
+                        <nz-option nzValue="Air" nzLabel="Air"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="movementType">Movement Type</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="movementType" nzPlaceHolder="Select Movement Type">
+                        <nz-option nzValue="Door to Door" nzLabel="Door to Door"></nz-option>
+                        <nz-option nzValue="Port to Door" nzLabel="Port to Door"></nz-option>
+                        <nz-option nzValue="Door to Port" nzLabel="Door to Port"></nz-option>
+                        <nz-option nzValue="Port to Port" nzLabel="Port to Port"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="incoterms">Incoterms</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="incoterms" nzPlaceHolder="Select Incoterms">
+                        <nz-option nzValue="DDP" nzLabel="Delivered Duty Paid (DDP)"></nz-option>
+                        <nz-option nzValue="DAT" nzLabel="Delivered At Place (DAT)"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="countryCity">Country - City</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [nzAutocomplete]="auto" formControlName="countryCity"
+                        placeholder="Type to search..." />
+                    <nz-autocomplete #auto>
+                        @for (item of filteredCities; track $index) {
+                        <nz-auto-option [nzValue]="item">
+                            {{ item }}
+                        </nz-auto-option>
+                        }
+                    </nz-autocomplete>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="packageType">Package Type</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="packageType" nzPlaceHolder="Select Package Type">
+                        <nz-option nzValue="Pallets" nzLabel="Pallets"></nz-option>
+                        <nz-option nzValue="Boxes" nzLabel="Boxes"></nz-option>
+                        <nz-option nzValue="Cartons" nzLabel="Cartons"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="unit1">Unit-1</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="unit1" nzPlaceHolder="Select Unit-1">
+                        <nz-option nzValue="CM" nzLabel="CM">CM</nz-option>
+                        <nz-option nzValue="IN" nzLabel="IN">IN</nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="this.offerForm.get('unit1')?.value">
+                <nz-form-label nzFor="unit1Value">Enter value</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="unit1Value" type="number"
+                        [placeholder]="this.offerForm.get('unit1')?.value ? 'Enter value in ' + this.offerForm.get('unit1')?.value : '' " />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="unit2">Unit-2</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="unit2" nzPlaceHolder="Select Unit-2">
+                        <nz-option nzValue="KG" nzLabel="KG">KG</nz-option>
+                        <nz-option nzValue="LB" nzLabel="LB">LB</nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="this.offerForm.get('unit2')?.value">
+                <nz-form-label nzFor="unit2Value">Enter value</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="unit2Value" type="number"
+                        [placeholder]="this.offerForm.get('unit2')?.value ? 'Enter value in ' + this.offerForm.get('unit2')?.value : '' " />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="currency">Currency</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="currency" nzPlaceHolder="Select Currency">
+                        <nz-option nzValue="USD" nzLabel="USD - US Dollar">USD - US Dollar</nz-option>
+                        <nz-option nzValue="CNY" nzLabel="CNY - Chinese Yuan">CNY - Chinese Yuan</nz-option>
+                        <nz-option nzValue="TRY" nzLabel="TRY - Turkish Lira">TRY - Turkish Lira</nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
         <nz-form-item>
-            <nz-form-label nzFor="mode">Mode</nz-form-label>
             <nz-form-control>
-                <nz-select formControlName="mode" nzPlaceHolder="Select Mode">
-                    <nz-option nzValue="LCL" nzLabel="LCL"></nz-option>
-                    <nz-option nzValue="FCL" nzLabel="FCL"></nz-option>
-                    <nz-option nzValue="Air" nzLabel="Air"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzFor="movementType">Movement Type</nz-form-label>
-            <nz-form-control>
-                <nz-select formControlName="movementType" nzPlaceHolder="Select Movement Type">
-                    <nz-option nzValue="Door to Door" nzLabel="Door to Door"></nz-option>
-                    <nz-option nzValue="Port to Door" nzLabel="Port to Door"></nz-option>
-                    <nz-option nzValue="Door to Port" nzLabel="Door to Port"></nz-option>
-                    <nz-option nzValue="Port to Port" nzLabel="Port to Port"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzFor="incoterms">Incoterms</nz-form-label>
-            <nz-form-control>
-                <nz-select formControlName="incoterms" nzPlaceHolder="Select Incoterms">
-                    <nz-option nzValue="DDP" nzLabel="Delivered Duty Paid (DDP)"></nz-option>
-                    <nz-option nzValue="DAT" nzLabel="Delivered At Place (DAT)"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzFor="countryCity">Country - City</nz-form-label>
-            <nz-form-control>
-                <input nz-input [nzAutocomplete]="auto" formControlName="countryCity" placeholder="Type to search..." />
-                <nz-autocomplete #auto>
-                    @for (item of filteredCities; track $index) {
-                    <nz-auto-option [nzValue]="item">
-                        {{ item }}
-                    </nz-auto-option>
-                    }
-                </nz-autocomplete>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzFor="packageType">Package Type</nz-form-label>
-            <nz-form-control>
-                <nz-select formControlName="packageType" nzPlaceHolder="Select Package Type">
-                    <nz-option nzValue="Pallets" nzLabel="Pallets"></nz-option>
-                    <nz-option nzValue="Boxes" nzLabel="Boxes"></nz-option>
-                    <nz-option nzValue="Cartons" nzLabel="Cartons"></nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzFor="unit1">Unit-1</nz-form-label>
-            <nz-form-control>
-                <nz-select formControlName="unit1" nzPlaceHolder="Select Unit-1">
-                    <nz-option nzValue="CM" nzLabel="CM">CM</nz-option>
-                    <nz-option nzValue="IN" nzLabel="IN">IN</nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzFor="unit2">Unit-2</nz-form-label>
-            <nz-form-control>
-                <nz-select formControlName="unit2" nzPlaceHolder="Select Unit-2">
-                    <nz-option nzValue="KG" nzLabel="KG">KG</nz-option>
-                    <nz-option nzValue="LB" nzLabel="LB">LB</nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzFor="currency">Currency</nz-form-label>
-            <nz-form-control>
-                <nz-select formControlName="currency" nzPlaceHolder="Select Currency">
-                    <nz-option nzValue="USD" nzLabel="USD - US Dollar">USD - US Dollar</nz-option>
-                    <nz-option nzValue="CNY" nzLabel="CNY - Chinese Yuan">CNY - Chinese Yuan</nz-option>
-                    <nz-option nzValue="TRY" nzLabel="TRY - Turkish Lira">TRY - Turkish Lira</nz-option>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-control>
-                <button nz-button nzType="primary" [disabled]="offerForm.invalid" (click)="saveOffer()">Save</button>
+                <button nz-button nzType="primary" [disabled]="offerForm.invalid" (click)="submitForm()">Save</button>
             </nz-form-control>
         </nz-form-item>
     </nz-form>

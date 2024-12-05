@@ -13,8 +13,11 @@ router.post("/", authMiddleware, async (req, res) => {
     countryCity,
     packageType,
     unit1,
+    unit1Value,
     unit2,
+    unit2Value,
     currency,
+    palletCount,
   } = req.body;
   const userId = req.user.id;
 
@@ -25,8 +28,11 @@ router.post("/", authMiddleware, async (req, res) => {
     !countryCity ||
     !packageType ||
     !unit1 ||
+    !unit1Value ||
     !unit2 ||
-    !currency
+    !unit2Value ||
+    !currency ||
+    palletCount === undefined
   ) {
     return res.status(400).json({
       status: "error",
@@ -36,42 +42,6 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 
   try {
-    let dimension;
-    if (packageType === "Cartons") {
-      dimension = await createOrUpdateDimension(
-        "Cartons",
-        12,
-        12,
-        12,
-        unit1,
-        unit2
-      );
-    } else if (packageType === "Boxes") {
-      dimension = await createOrUpdateDimension(
-        "Boxes",
-        24,
-        16,
-        12,
-        unit1,
-        unit2
-      );
-    } else if (packageType === "Pallets") {
-      dimension = await createOrUpdateDimension(
-        "Pallets",
-        40,
-        48,
-        60,
-        unit1,
-        unit2
-      );
-    } else {
-      return res.status(400).json({
-        status: "error",
-        message: "Invalid package type.",
-        data: null,
-      });
-    }
-
     const newOffer = new Offer({
       mode,
       movementType,
@@ -79,11 +49,12 @@ router.post("/", authMiddleware, async (req, res) => {
       countryCity,
       packageType,
       unit1,
+      unit1Value,
       unit2,
+      unit2Value,
       currency,
       userId,
-      dimensions: dimension._id,
-      palletCount: dimension.palletCount,
+      palletCount, 
     });
 
     await newOffer.save();
@@ -102,30 +73,6 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-const createOrUpdateDimension = async (
-  type,
-  width,
-  length,
-  height,
-  unit1,
-  unit2
-) => {
-  let dimension = await Dimension.findOne({ type });
-  if (!dimension) {
-    dimension = new Dimension({
-      type,
-      width,
-      length,
-      height,
-      unit1Value: unit1,
-      unit2Value: unit2,
-      palletCount: calculatePalletCount(width, length, height, unit1, unit2),
-    });
-    await dimension.save();
-  }
-  return dimension;
-};
-
 router.get("/", authMiddleware, async (req, res) => {
   const userId = req.user.id;
   const page = parseInt(req.query.page) || 1;
@@ -134,10 +81,7 @@ router.get("/", authMiddleware, async (req, res) => {
   try {
     const skip = (page - 1) * limit;
 
-    const offers = await Offer.find({ userId })
-      .skip(skip)
-      .limit(limit)
-      .populate("dimensions");
+    const offers = await Offer.find({ userId }).skip(skip).limit(limit);
 
     const totalItems = await Offer.countDocuments({ userId });
     const totalPages = Math.ceil(totalItems / limit);
