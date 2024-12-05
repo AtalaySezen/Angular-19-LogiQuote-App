@@ -1,14 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { DataService } from '../../shared/services/data.service';
 import { Offer } from '../../shared/models/general.model';
 import { NotificationService } from '../../shared/services/notification.service';
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 @Component({
   selector: 'app-offer-list',
-  imports: [NzTableModule, NzDividerModule,NzPaginationModule],
+  imports: [NzTableModule],
   templateUrl: './offer-list.component.html',
   styleUrl: './offer-list.component.scss'
 })
@@ -27,7 +25,6 @@ export class OfferListComponent {
   getAllOffers() {
     this.dataService.GetOffers().subscribe({
       next: (data: Offer) => {
-        console.log(data.data.offers);
         if (data.status === 'success') {
           this.offerList = data.data.offers;
         } else {
