@@ -26,13 +26,14 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFor="incoterms">Incoterms</nz-form-label>
-                <nz-form-control nz-tooltip nzTooltipTitle="Incoterms (International Commercial Terms) define the responsibilities of buyers and sellers for the delivery of goods under sales contracts. 'DDP' means the seller is responsible for all costs and risks, including customs duties, while 'DAT' means the seller is responsible for delivery to a specified place, but the buyer is responsible for import duties and risks.">
-                  <nz-select formControlName="incoterms" nzPlaceHolder="Select Incoterms">
-                    <nz-option nzValue="DDP" nzLabel="Delivered Duty Paid (DDP)"></nz-option>
-                    <nz-option nzValue="DAT" nzLabel="Delivered At Place (DAT)"></nz-option>
-                  </nz-select>
+                <nz-form-control nz-tooltip
+                    nzTooltipTitle="Incoterms (International Commercial Terms) define the responsibilities of buyers and sellers for the delivery of goods under sales contracts. 'DDP' means the seller is responsible for all costs and risks, including customs duties, while 'DAT' means the seller is responsible for delivery to a specified place, but the buyer is responsible for import duties and risks.">
+                    <nz-select formControlName="incoterms" nzPlaceHolder="Select Incoterms">
+                        <nz-option nzValue="DDP" nzLabel="Delivered Duty Paid (DDP)"></nz-option>
+                        <nz-option nzValue="DAT" nzLabel="Delivered At Place (DAT)"></nz-option>
+                    </nz-select>
                 </nz-form-control>
-              </nz-form-item>
+            </nz-form-item>
             <nz-form-item>
                 <nz-form-label nzFor="countryCity">Country - City</nz-form-label>
                 <nz-form-control>

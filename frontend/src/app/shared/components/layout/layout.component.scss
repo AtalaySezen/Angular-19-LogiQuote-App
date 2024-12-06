@@ -29,7 +29,7 @@ nz-content {
     background-color: white;
 }
 
-nz-sider{
+nz-sider {
     z-index: 9999;
 }
 
@@ -47,3 +47,8 @@ nz-footer {
     text-align: center;
 }
 
+@media (max-width: 600px) {
+    .logo-header {
+        font-size: 1rem;
+    }
+}

@@ -52,7 +52,7 @@ export class RegisterComponent {
 
   submitRegisterForm(): void {
     if (this.RegisterForm.valid) {
-      this.authService.Register(this.RegisterForm.value.email!, this.RegisterForm.value.email!).subscribe({
+      this.authService.Register(this.RegisterForm.value.email!, this.RegisterForm.value.password!).subscribe({
         next: (data) => {
           if (data.status === 'success') {
             this.notificationService.createNotification(data.status, '', data.message)

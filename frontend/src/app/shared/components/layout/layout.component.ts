@@ -16,9 +16,7 @@ export class LayoutComponent {
   authService = inject(AuthService);
   isCollapsed: boolean = false;
 
-
   logOut() {
-    console.log("Çıkış yapıldı.")
     this.authService.LogOut();
   }
 }

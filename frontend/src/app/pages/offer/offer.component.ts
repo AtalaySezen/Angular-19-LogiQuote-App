@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -66,11 +66,10 @@ export class OfferComponent {
     this.filteredCities = this.countriesCities.flatMap(item => `${item.country} - ${item.city}`);
   }
 
-  cityValidator() {
+  cityValidator(): ValidatorFn {
     const validCities = this.countriesCities.map(item => `${item.country} - ${item.city}`);
-    return (control: AbstractControl): ValidationErrors | null => {
-      return !control.value || validCities.includes(control.value) ? null : { invalidCity: true };
-    };
+    return (control: AbstractControl): ValidationErrors | null =>
+      validCities.includes(control.value) ? null : { invalidCity: true };
   }
 
   filterCities(query: string): string[] {
@@ -108,27 +107,34 @@ export class OfferComponent {
   }
 
   calculatePackagePalletCount(packageType: string, productAreaInches: number, carton: any, box: any, pallet: any): number {
+    if (!carton || !box || !pallet) {
+      console.error('Invalid package type provided.');
+      return 0;
+    }
+
     let palletCount = 0;
 
     switch (packageType) {
       case 'Cartons':
         const cartonsPerBox = this.calculateCartonsPerBox(carton, box);
-        palletCount = Math.ceil(productAreaInches / cartonsPerBox);
+        palletCount = cartonsPerBox > 0 ? Math.ceil(productAreaInches / cartonsPerBox) : 0;
         break;
       case 'Boxes':
         const boxesPerPallet = this.calculateBoxesPerPallet(box, pallet);
-        palletCount = Math.ceil(productAreaInches / boxesPerPallet);
+        palletCount = boxesPerPallet > 0 ? Math.ceil(productAreaInches / boxesPerPallet) : 0;
         break;
       case 'Pallets':
         palletCount = 1;
         break;
       default:
-        console.error('Geçersiz paket tipi seçildi.');
-        break;
+        console.error('Invalid package type provided.');
+        return 0;
     }
+
     this.offerForm.get('palletCount')?.setValue(palletCount);
     return palletCount;
   }
+
 
   calculateCartonsPerBox(carton: any, box: any): number {
     return Math.trunc(box.width / carton.width) *
