@@ -16,6 +16,8 @@ export interface TokenModel<T> {
 
 export interface OfferResponse {
     offers: Offer[];
+    totalItemCount: number;
+    totalPages: number;
 }
 
 export interface Offer {

@@ -3,10 +3,11 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { DataService } from '../../shared/services/data.service';
 import { Offer } from '../../shared/models/general.model';
 import { NotificationService } from '../../shared/services/notification.service';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 @Component({
   selector: 'app-offer-list',
-  imports: [NzTableModule],
+  imports: [NzTableModule, NzPaginationModule],
   templateUrl: './offer-list.component.html',
   styleUrl: './offer-list.component.scss'
 })
@@ -14,18 +15,22 @@ export class OfferListComponent {
   dataService = inject(DataService);
   NotificationService = inject(NotificationService);
   offerList: Offer[] = [];
-  pageSize = 10;
-  pageIndex = 1;
-  total = 1;
+
+  totalItemCount: number = 0;
+  totalPages: number = 0;
+  currentPage: number = 1;
+  pageSize: number = 5;
 
   ngOnInit() {
     this.getAllOffers();
   }
 
   getAllOffers() {
-    this.dataService.GetOffers().subscribe({
+    this.dataService.GetOffers({ page: this.currentPage, size: this.pageSize }).subscribe({
       next: (data: Offer) => {
         if (data.status === 'success') {
+          this.totalItemCount = data.data.totalItemCount;
+          this.totalPages = data.data.totalPages;
           this.offerList = data.data.offers;
         } else {
           this.NotificationService.createNotification('error', 'Error', 'Error');
@@ -35,6 +40,11 @@ export class OfferListComponent {
         console.error('Error:', err);
       }
     });
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.getAllOffers();
   }
 
 }

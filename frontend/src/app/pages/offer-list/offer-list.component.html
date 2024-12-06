@@ -1,4 +1,6 @@
-<nz-table #borderedTable nzBordered nzTitle="Offers" [nzShowPagination]="false" [nzData]="offerList">
+<nz-table #borderedTable nzBordered nzTitle="Offers" (nzPageIndexChange)="onPageChange($event)"
+    [nzFrontPagination]="true" [nzTotal]="totalItemCount" [nzPaginationPosition]="'bottom'" [nzPageSize]="totalPages"
+    [nzData]="offerList">
     <thead>
         <tr>
             <th>Mode</th>
