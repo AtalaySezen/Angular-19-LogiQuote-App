@@ -19,7 +19,7 @@ export class OfferListComponent {
   totalItemCount: number = 0;
   totalPages: number = 0;
   currentPage: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 8;
 
   ngOnInit() {
     this.getAllOffers();
@@ -29,8 +29,8 @@ export class OfferListComponent {
     this.dataService.GetOffers({ page: this.currentPage, size: this.pageSize }).subscribe({
       next: (data: Offer) => {
         if (data.status === 'success') {
-          this.totalItemCount = data.data.totalItemCount;
           this.totalPages = data.data.totalPages;
+          this.totalItemCount = data.data.totalItemCount;
           this.offerList = data.data.offers;
         } else {
           this.NotificationService.createNotification('error', 'Error', 'Error');
